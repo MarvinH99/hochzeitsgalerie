@@ -1,45 +1,116 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #f7f3f0;
-  text-align: center;
+/* Basis-Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Body */
+body {
+  background: #f7f3f0;
+  text-align: center;
+  color: #000; /* Schriftfarbe schwarz der Button die "Wilkommen zur Hochzeit" */
+}
+
+/* Container */
 .container {
   background: white;
   max-width: 400px;
-  margin: 100px auto;
+  margin: 100px auto; /* Absatnd von ? */
   padding: 20px;
   border-radius: 12px;
 }
 
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  font-size: 16px;
+/* Überschrift */
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333; /* Überschrift schwarz */
+  line-height: 1.2; /* damit die Zeilen nicht zu weit auseinander stehen */
 }
 
-button {
+/* Buttons */
+button, a.button {
+  background-color: #f7c59f; 
+  color: #000000;
+  border: none;
   padding: 10px 20px;
   margin: 10px;
-  font-size: 16px;
   border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  background-color: #f7c59f;
-  border: none;
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.2s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-button:hover {
+
+button:hover, a.button:hover {
   background-color: #f4a261;
 }
 
+/* Input */
+input[type="password"] {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  width: 80%;
+  max-width: 300px;
+}
 
+/* Status Text */
+#passwordStatus {
+  margin-top: 10px;
+  color: red;
+}
+
+/* Galerie */
 .gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
-.gallery img, .gallery video {
+
+.gallery img,
+.gallery video {
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+
+/* Download-Button unter jedem Bild */
+.gallery a {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  background-color: #4a90e2; /* Download-Button Farbe */
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+/* Media Queries für Handys */
+@media (max-width: 600px) {
+  .container {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  button, a.button {
+    width: 90%;
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
+
