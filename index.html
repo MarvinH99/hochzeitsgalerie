@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Hochzeitsseite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Willkommen zur Hochzeitsseite 💍</h1>
+
+    <div id="passwordSection">
+      <p>Bitte Passwort eingeben:</p>
+      <input type="password" id="passwordInput">
+      <button onclick="checkPassword()">Weiter</button>
+      <p id="passwordStatus"></p>
+    </div>
+
+    <div id="menuSection" style="display:none;">
+      <p>Willkommen! Wähle eine Option:</p>
+      <button onclick="goToUpload()">Fotos/Videos hochladen 📸🎥</button>
+      <button onclick="goToGallery()">Galerie anschauen 🖼️</button>
+    </div>
+  </div>
+
+  <script>
+  const correctPassword = "123";
+
+  function showMenu() {
+    document.getElementById("passwordSection").style.display = "none";
+    document.getElementById("menuSection").style.display = "block";
+  }
+
+  function checkPassword() {
+    const input = document.getElementById("passwordInput").value;
+    const status = document.getElementById("passwordStatus");
+
+    if (input === correctPassword) {
+      sessionStorage.setItem("authorized", "true");
+      showMenu();
+    } else {
+      status.textContent = "Falsches Passwort 😕";
+    }
+  }
+
+  function goToUpload() {
+    window.location.href = "upload.html";
+  }
+
+  function goToGallery() {
+    window.location.href = "gallery.html";
+  }
+
+  // ✅ WARTET, bis die Seite geladen ist
+  window.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("authorized") === "true") {
+      showMenu();
+    }
+  });
+</script>
+
+</body>
+</html>
