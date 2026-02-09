@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Galerie</title>
+  <link rel="stylesheet" href="style.css">
   <!-- 👇 Responsives Design für Handys -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,17 +12,17 @@
 
 <body>
 
-<h1>Galerie 📸</h1>
+  <div class="container">
+    <h1>Galerie 📸</h1>
+    <button class="button" onclick="goBack()">Zurück</button>
+    <div id="gallery"></div>
+    <button class="button" onclick="goBack()">Zurück</button>
+  </div>
+  
 
-<button onclick="goBack()">Zurück</button>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
-<div id="gallery"></div>
-
-<button onclick="goBack()">Zurück</button>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-
-<script src="gallery.js"></script>
+  <script src="gallery.js"></script>
 
 </body>
 </html>
