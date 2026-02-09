@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="de">
 
@@ -26,3 +27,33 @@
   <script src="upload.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dateien hochladen</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- 👇 Responsives Design für Handys -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+  <div class="container">
+    <h1>Fotos & Videos hochladen 📸🎥</h1>
+
+    <input type="file" id="fileInput" multiple accept="image/*,video/*">
+    <button onclick="uploadFiles()">Hochladen</button>
+
+    <button onclick="goBack()">Zurück</button>
+
+    <p id="status"></p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="upload.js"></script>
+</body>
+</html>
+>>>>>>> 1a61a6e (Erste Version der Hochzeitsgalerie mit Design und Bildern)
