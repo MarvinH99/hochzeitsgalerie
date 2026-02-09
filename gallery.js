@@ -57,7 +57,7 @@ async function loadGallery() {
     if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
       element = document.createElement("img");
       element.src = url;
-      element.style.width = "100px";
+      element.style.width = "150px"; // 100px = 2 Bilder
       element.style.display = "block";
       element.loading = "lazy";
     }
@@ -67,7 +67,7 @@ async function loadGallery() {
       element = document.createElement("video");
       element.src = url;
       element.controls = true;
-      element.style.width = "100px";
+      element.style.width = "150px";
       element.style.display = "block";
     }
 
