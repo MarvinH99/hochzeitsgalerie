@@ -6,21 +6,38 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Body */
-body {
+
+
+/* Body alt
+body { 
+  background: url('hochzeit_bg.jpg') no-repeat center center fixed;
+  background-size: cover;
   background: #f7f3f0;
   text-align: center;
-  color: #000; /* Schriftfarbe schwarz der Button die "Wilkommen zur Hochzeit" */
+  color: #000; 
+} */
+
+/* Body mit Hintergrundbild */
+body {
+  background: url("images/Blumen.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  text-align: center;
+  color: #000;
+  min-height: 100vh;
 }
+
+
 
 /* Container */
 .container {
-  background: white;
+  background: rgba(255, 255, 255, 0.9); /* Transparenz eingestellen letzter Wert */
   max-width: 400px;
-  margin: 100px auto; /* Absatnd von ? */
+  margin: 100px auto;
   padding: 20px;
   border-radius: 12px;
 }
+
+
 
 /* Überschrift */
 h1 {
