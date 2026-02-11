@@ -34,26 +34,41 @@ function openLightbox(index) {
   lightbox.style.zIndex = 1000;
   lightbox.style.overflow = "hidden";
 
-  function showCurrent() {
-    lightbox.innerHTML = ""; // vorherigen Inhalt entfernen
-    const item = galleryItems[currentIndex];
-    let element;
+ function showCurrent() {
+  lightbox.innerHTML = ""; // vorherigen Inhalt entfernen
+  const item = galleryItems[currentIndex];
+  let element;
 
-    if (item.type === "image") {
-      element = document.createElement("img");
-      element.src = item.url;
-    } else if (item.type === "video") {
-      element = document.createElement("video");
-      element.src = item.url;
-      element.controls = true;
-      element.autoplay = true;
-    }
-
-    element.style.maxWidth = "90%";
-    element.style.maxHeight = "90%";
-    element.style.borderRadius = "12px";
-    lightbox.appendChild(element);
+  if (item.type === "image") {
+    element = document.createElement("img");
+    element.src = item.url;
+  } else if (item.type === "video") {
+    element = document.createElement("video");
+    element.src = item.url;
+    element.controls = true;
+    element.autoplay = true;
   }
+
+  element.style.maxWidth = "90%";
+  element.style.maxHeight = "90%";
+  element.style.borderRadius = "12px";
+
+  lightbox.appendChild(element);
+
+  // 🔢 Positionsanzeige (z.B. 5 / 8)
+  const counter = document.createElement("div");
+  counter.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
+  counter.style.position = "absolute";
+  counter.style.bottom = "20px";
+  counter.style.right = "25px";
+  counter.style.color = "white";
+  counter.style.backgroundColor = "rgba(0,0,0,0.5)";
+  counter.style.padding = "6px 12px";
+  counter.style.borderRadius = "20px";
+  counter.style.fontSize = "14px";
+
+  lightbox.appendChild(counter);
+}
 
   showCurrent();
 
@@ -128,7 +143,7 @@ async function loadGallery() {
     if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
       element = document.createElement("img");
       element.src = url;
-      element.style.width = "150px";
+      element.style.width = "125px";
       element.style.display = "block";
       element.loading = "lazy";
 
@@ -143,7 +158,7 @@ async function loadGallery() {
       element = document.createElement("video");
       element.src = url;
       element.controls = true;
-      element.style.width = "150px";
+      element.style.width = "125px";
       element.style.display = "block";
 
       // für Lightbox speichern
@@ -154,16 +169,6 @@ async function loadGallery() {
 
     if (element) {
       wrapper.appendChild(element);
-
-      // ⬇️ Download-Button
-      const downloadBtn = document.createElement("a");
-      downloadBtn.href = url;
-      downloadBtn.download = file.name;
-      downloadBtn.textContent = "⬇️ Download";
-      downloadBtn.style.display = "inline-block";
-      downloadBtn.style.marginTop = "6px";
-
-      wrapper.appendChild(downloadBtn);
       gallery.appendChild(wrapper);
     }
   });

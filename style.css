@@ -15,9 +15,10 @@ body {
   background: #f7f3f0;
   text-align: center;
   color: #000; 
-} */
+} 
+*/
 
-/* Body mit Hintergrundbild */
+/* Body mit Hintergrundbild 
 body {
   background: url("images/Blumen.jpeg") no-repeat center center;
   background-size: cover;
@@ -25,6 +26,21 @@ body {
   color: #000;
   min-height: 100vh;
 }
+*/
+
+/* Body mit festem Hintergrundbild */
+body {
+  background-image: url("images/Blumen.jpeg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;     /* füllt den Bildschirm aus, ohne das Seitenverhältnis zu verzerren */
+  background-attachment: fixed; /* Hintergrund bleibt beim Scrollen fixiert */
+  color: #000;
+  text-align: center;
+  min-height: 100vh;          /* stellt sicher, dass der Body mindestens die Höhe des Bildschirms hat */
+  margin: 0;
+}
+
 
 
 
