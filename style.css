@@ -103,17 +103,19 @@ input[type="password"] {
 
 /* Galerie */
 .gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
   gap: 10px;
   margin-top: 20px;
+
+  /* Desktop: so viele Spalten wie passen, min 140px */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .gallery img,
 .gallery video {
-  max-width: 100%;
-  height: auto;
+  width: 100%;           
+  aspect-ratio: 1 / 1;   
+  object-fit: cover;     
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
@@ -145,5 +147,9 @@ input[type="password"] {
     width: 90%;
     font-size: 1rem;
     padding: 12px;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(3, 1fr); /* immer 2 Spalten */
   }
 }
