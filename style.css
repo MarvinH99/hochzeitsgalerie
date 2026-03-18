@@ -107,8 +107,8 @@ input[type="password"] {
   gap: 10px;
   margin-top: 20px;
 
-  /* Desktop: so viele Spalten wie passen, min 140px */
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  /* Desktop: so viele Spalten wie passen */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 
 .gallery img,
@@ -133,7 +133,7 @@ input[type="password"] {
 }
 
 /* Media Queries für Handys */
-@media (max-width: 600px) {
+@media (max-width: 1600px) {
   .container {
     margin: 20px;
     padding: 15px;
@@ -150,6 +150,6 @@ input[type="password"] {
   }
 
   .gallery {
-    grid-template-columns: repeat(3, 1fr); /* immer 2 Spalten */
+    grid-template-columns: repeat(2, 1fr); /* immer 2 Spalten */
   }
 }
