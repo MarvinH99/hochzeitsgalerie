@@ -46,9 +46,10 @@ body {
 
 /* Container */
 .container {
-  background: rgba(255, 255, 255, 0.9); /* Transparenz eingestellen letzter Wert */
-  max-width: 400px;
-  margin: 100px auto;
+  background: rgba(255, 255, 255, 0.9);
+  max-width: 1200px;   
+  width: 90%;         
+  margin: 20px auto;
   padding: 20px;
   border-radius: 12px;
 }

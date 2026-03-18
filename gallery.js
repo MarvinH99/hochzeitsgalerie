@@ -143,7 +143,10 @@ async function loadGallery() {
     if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
       element = document.createElement("img");
       element.src = url;
-      element.style.width = "125px";
+      element.style.width = "140px";
+      element.style.height = "140px";
+      element.style.objectFit = "cover"; 
+      element.style.borderRadius = "10px";
       element.style.display = "block";
       element.loading = "lazy";
 
@@ -158,7 +161,10 @@ async function loadGallery() {
       element = document.createElement("video");
       element.src = url;
       element.controls = true;
-      element.style.width = "125px";
+      element.style.width = "140px";
+      element.style.height = "140px";
+      element.style.objectFit = "cover"; 
+      element.style.borderRadius = "10px";
       element.style.display = "block";
 
       // für Lightbox speichern
