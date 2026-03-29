@@ -19,6 +19,7 @@ let currentIndex = 0;
 // Lightbox öffnen
 function openLightbox(index) {
   history.pushState({ lightbox: true }, "");
+
   currentIndex = index;
 
   const lightbox = document.createElement("div");
@@ -73,8 +74,8 @@ function openLightbox(index) {
 
   showCurrent();
 
-
- lightbox.addEventListener("click", () => {
+  // Klicken schließt Lightbox
+  lightbox.addEventListener("click", () => {
   document.body.removeChild(lightbox);
   history.back(); 
 });
@@ -135,7 +136,9 @@ async function loadGallery() {
     const url = supabaseClient.storage.from("uploads").getPublicUrl(file.name).data.publicUrl;
 
     const wrapper = document.createElement("div");
-   
+    wrapper.style.display = "inline-block";
+    wrapper.style.margin = "10px";
+    wrapper.style.textAlign = "center";
 
     let element;
 
