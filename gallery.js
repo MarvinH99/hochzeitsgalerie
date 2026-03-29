@@ -37,7 +37,7 @@ function openLightbox(index) {
   lightbox.style.overflow = "hidden";
 
  function showCurrent() {
-  lightbox.innerHTML = ""; // vorherigen Inhalt entfernen
+  lightbox.innerHTML = ""; 
   const item = galleryItems[currentIndex];
   let element;
 
@@ -145,9 +145,7 @@ async function loadGallery() {
     // 🖼️ Bilder
     if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
       element = document.createElement("img");
-      element.src = url;
-      element.style.width = "140px";
-      element.style.height = "140px";
+      element.src = url;     
       element.style.objectFit = "cover"; 
       element.style.borderRadius = "10px";
       element.style.display = "block";
@@ -164,8 +162,6 @@ async function loadGallery() {
       element = document.createElement("video");
       element.src = url;
       element.controls = true;
-      element.style.width = "140px";
-      element.style.height = "140px";
       element.style.objectFit = "cover"; 
       element.style.borderRadius = "10px";
       element.style.display = "block";

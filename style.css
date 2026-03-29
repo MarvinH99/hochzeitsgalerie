@@ -111,6 +111,10 @@ input[type="password"] {
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 
+.gallery > div {
+  width: 100%;
+}
+
 .gallery img,
 .gallery video {
   width: 100%;           
@@ -133,7 +137,7 @@ input[type="password"] {
 }
 
 /* Media Queries für Handys */
-@media (max-width: 1600px) {
+@media (max-width: 600px) {
   .container {
     margin: 20px;
     padding: 15px;
