@@ -136,24 +136,4 @@ input[type="password"] {
   font-size: 0.9rem;
 }
 
-/* Media Queries für Handys */
-@media (max-width: 600px) {
-  .container {
-    margin: 20px;
-    padding: 15px;
-  }
 
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  button, a.button {
-    width: 90%;
-    font-size: 1rem;
-    padding: 12px;
-  }
-
-  .gallery {
-    grid-template-columns: repeat(2, 1fr); /* immer 2 Spalten */
-  }
-}
