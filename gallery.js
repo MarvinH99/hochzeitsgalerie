@@ -36,8 +36,12 @@ function openLightbox(index) {
   lightbox.style.zIndex = 1000;
   lightbox.style.overflow = "hidden";
 
- function showCurrent() {
-  lightbox.innerHTML = ""; 
+  let currentScale = 1;
+  let translateX = 0;
+  let translateY = 0;
+
+  function showCurrent() {
+  lightbox.innerHTML = ""; // vorherigen Inhalt entfernen
   const item = galleryItems[currentIndex];
   let element;
 
@@ -54,10 +58,13 @@ function openLightbox(index) {
   element.style.maxWidth = "90%";
   element.style.maxHeight = "90%";
   element.style.borderRadius = "12px";
+  element.style.transformOrigin = "0 0"; // wichtig für Maus-Zoom
+  element.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+  element.style.cursor = "default";
 
   lightbox.appendChild(element);
 
-  // 🔢 Positionsanzeige (z.B. 5 / 8)
+  // Positionsanzeige
   const counter = document.createElement("div");
   counter.textContent = `${currentIndex + 1} / ${galleryItems.length}`;
   counter.style.position = "absolute";
@@ -68,25 +75,86 @@ function openLightbox(index) {
   counter.style.padding = "6px 12px";
   counter.style.borderRadius = "20px";
   counter.style.fontSize = "14px";
-
   lightbox.appendChild(counter);
+
+  // 🔹 Mausrad-Zoom für Desktop (wird jedes Mal aufs neue Bild gesetzt)
+  element.addEventListener("wheel", e => {
+    e.preventDefault();
+    const rect = element.getBoundingClientRect();
+
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
+    const oldScale = currentScale;
+
+    currentScale += e.deltaY < 0 ? 0.1 : -0.1;
+    currentScale = Math.min(Math.max(currentScale, 1), 5);
+
+    translateX -= (offsetX / oldScale) * (currentScale - oldScale);
+    translateY -= (offsetY / oldScale) * (currentScale - oldScale);
+
+    element.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+  });
 }
 
   showCurrent();
 
-  // Klicken schließt Lightbox
-  lightbox.addEventListener("click", () => {
-  document.body.removeChild(lightbox);
-  history.back(); 
-});
+  const element = lightbox.querySelector("img, video");
 
-  // Swipe für Mobilgeräte
-  let startX = 0;
-  lightbox.addEventListener("touchstart", e => { startX = e.touches[0].clientX; });
-  lightbox.addEventListener("touchend", e => {
-    const endX = e.changedTouches[0].clientX;
-    if (endX - startX > 50) prevItem();
-    if (startX - endX > 50) nextItem();
+  // Maus-Zoom unter Cursor
+  element.addEventListener("wheel", e => {
+    e.preventDefault();
+    const rect = element.getBoundingClientRect();
+
+    // Mausposition relativ zum Bild
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
+
+    // Alte Scale merken
+    const oldScale = currentScale;
+
+    // Scale ändern
+    currentScale += e.deltaY < 0 ? 0.1 : -0.1;
+    currentScale = Math.min(Math.max(currentScale, 1), 5);
+
+    // Translate so anpassen, dass der Punkt unter dem Cursor fix bleibt
+    translateX -= (offsetX / oldScale) * (currentScale - oldScale);
+    translateY -= (offsetY / oldScale) * (currentScale - oldScale);
+
+    element.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+  });
+
+  // Touch für Mobile: Swipe + Pinch
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let startTouchesDist = 0;
+
+  lightbox.addEventListener("touchstart", e => {
+    if (e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      startTouchesDist = Math.hypot(dx, dy);
+    }
+  });
+
+  lightbox.addEventListener("touchmove", e => {
+    if (e.touches.length === 1 && currentScale === 1) {
+      // Swipe für Navigation
+      const endX = e.touches[0].clientX;
+      if (endX - touchStartX > 50) prevItem();
+      if (touchStartX - endX > 50) nextItem();
+    } else if (e.touches.length === 2) {
+      // Pinch Zoom
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const scaleChange = dist / startTouchesDist;
+      currentScale = Math.min(Math.max(scaleChange, 1), 5);
+      element.style.transform = `scale(${currentScale}) translate(${translateX}px, ${translateY}px)`;
+    }
   });
 
   // Pfeiltasten + Escape für Desktop
@@ -100,8 +168,22 @@ function openLightbox(index) {
     }
   });
 
-  function prevItem() { currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length; showCurrent(); }
-  function nextItem() { currentIndex = (currentIndex + 1) % galleryItems.length; showCurrent(); }
+  // Klicken schließt Lightbox
+  lightbox.addEventListener("click", () => {
+    document.body.removeChild(lightbox);
+    history.back();
+  });
+
+  function prevItem() { 
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length; 
+    currentScale = 1; translateX = 0; translateY = 0;
+    showCurrent(); 
+  }
+  function nextItem() { 
+    currentIndex = (currentIndex + 1) % galleryItems.length; 
+    currentScale = 1; translateX = 0; translateY = 0;
+    showCurrent(); 
+  }
 
   document.body.appendChild(lightbox);
 }

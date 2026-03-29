@@ -107,7 +107,7 @@ input[type="password"] {
   gap: 10px;
   margin-top: 20px;
 
-  /* Desktop: so viele Spalten wie passen */
+  /*  so viele Spalten wie passen aber mindestens ...px */
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 
@@ -135,5 +135,4 @@ input[type="password"] {
   margin-top: 4px;
   font-size: 0.9rem;
 }
-
 
