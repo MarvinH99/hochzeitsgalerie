@@ -1,7 +1,8 @@
-const SUPABASE_URL = "https://ajznsupimlikezxsghjp.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqem5zdXBpbWxpa2V6eHNnaGpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0MDUyODUsImV4cCI6MjA4NTk4MTI4NX0.yZyWSUxIYOwIVo1ZwdBVqAUewSw-NLZS4l6_C0I6CHo";
+const SUPABASE_URL = "https://ajznsupimlikezxsghjp.supabase.co"; 
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqem5zdXBpbWxpa2V6eHNnaGpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA0MDUyODUsImV4cCI6MjA4NTk4MTI4NX0.yZyWSUxIYOwIVo1ZwdBVqAUewSw-NLZS4l6_C0I6CHo"; 
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 
 // 🔐 Zugriffsschutz
 if (sessionStorage.getItem("authorized") !== "true") {
@@ -80,7 +81,7 @@ function openLightbox(index) {
       maxHeight: "90%",
       borderRadius: "12px",
       transformOrigin: "0 0",
-      cursor: "grab"
+      cursor: "default"
     });
 
     resetZoom(element);
@@ -107,25 +108,39 @@ function openLightbox(index) {
     // =========================
     // 🖱️ DESKTOP ZOOM
     // =========================
-    element.addEventListener("wheel", (e) => {
-      e.preventDefault();
+    let zoomRAF = null;
 
-      const rect = element.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const offsetY = e.clientY - rect.top;
+element.addEventListener("wheel", (e) => {
+  e.preventDefault();
 
-      const oldScale = currentScale;
+  if (zoomRAF) return;
 
-      currentScale += e.deltaY < 0 ? 0.15 : -0.15;
-      currentScale = Math.min(Math.max(currentScale, 1), 5);
+  zoomRAF = requestAnimationFrame(() => {
+    const rect = element.getBoundingClientRect();
 
-      translateX -= (offsetX / oldScale) * (currentScale - oldScale);
-      translateY -= (offsetY / oldScale) * (currentScale - oldScale);
+    const offsetX = e.clientX - rect.left;
+    const offsetY = e.clientY - rect.top;
 
-      isZoomed = currentScale > 1;
+    const zoomIntensity = 0.08; // kleiner = smoother
+    const direction = e.deltaY < 0 ? 1 : -1;
 
-      updateTransform(element);
-    });
+    const oldScale = currentScale;
+    const newScale = Math.min(Math.max(oldScale + direction * zoomIntensity, 1), 5);
+
+    const scaleFactor = newScale / oldScale;
+
+    // Zoom auf Cursor
+    translateX -= (offsetX / oldScale) * (newScale - oldScale);
+    translateY -= (offsetY / oldScale) * (newScale - oldScale);
+
+    currentScale = newScale;
+    isZoomed = currentScale > 1;
+
+    updateTransform(element);
+
+    zoomRAF = null;
+  });
+});
 
     // =========================
     // 📱 TOUCH SUPPORT
