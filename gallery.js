@@ -136,11 +136,16 @@ function openLightbox(index) {
     let initialDistance = 0;
     let initialScale = 1;
     let isDragging = false;
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    
 
     element.addEventListener("touchstart", (e) => {
       if (e.touches.length === 1) {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
+        swipeStartX = startX;   
+        swipeStartY = startY;
         isDragging = false;
       } else if (e.touches.length === 2) {
         const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -179,15 +184,29 @@ function openLightbox(index) {
       }
     });
 
-    element.addEventListener("touchend", () => {
-      if (!isDragging) {
-        if (isZoomed) {
-          resetZoom(element);
-        } else {
-          closeLightbox();
-        }
+    element.addEventListener("touchend", (e) => {
+  if (!isDragging) {
+    if (currentScale === 1) {
+      // Swipe Detection
+      const swipeEndX = e.changedTouches[0].clientX;
+      const swipeEndY = e.changedTouches[0].clientY;
+
+      const dx = swipeEndX - swipeStartX;
+      const dy = swipeEndY - swipeStartY;
+
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 0) prevItem(); // nach rechts swipen
+        else nextItem();         // nach links swipen
+        return;
       }
-    });
+    }
+
+    // Tap zum Schließen
+    const media = lightbox.querySelector("img, video");
+    if (isZoomed) resetZoom(media);
+    else closeLightbox();
+  }
+  });
   }
 
   function closeLightbox() {
