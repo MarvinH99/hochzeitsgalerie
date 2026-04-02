@@ -108,39 +108,25 @@ function openLightbox(index) {
     // =========================
     // 🖱️ DESKTOP ZOOM
     // =========================
-    let zoomRAF = null;
+    element.addEventListener("wheel", (e) => {
+      e.preventDefault();
 
-element.addEventListener("wheel", (e) => {
-  e.preventDefault();
+      const rect = element.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
 
-  if (zoomRAF) return;
+      const oldScale = currentScale;
 
-  zoomRAF = requestAnimationFrame(() => {
-    const rect = element.getBoundingClientRect();
+      currentScale += e.deltaY < 0 ? 0.15 : -0.15;
+      currentScale = Math.min(Math.max(currentScale, 1), 5);
 
-    const offsetX = e.clientX - rect.left;
-    const offsetY = e.clientY - rect.top;
+      translateX -= (offsetX / oldScale) * (currentScale - oldScale);
+      translateY -= (offsetY / oldScale) * (currentScale - oldScale);
 
-    const zoomIntensity = 0.08; // kleiner = smoother
-    const direction = e.deltaY < 0 ? 1 : -1;
+      isZoomed = currentScale > 1;
 
-    const oldScale = currentScale;
-    const newScale = Math.min(Math.max(oldScale + direction * zoomIntensity, 1), 5);
-
-    const scaleFactor = newScale / oldScale;
-
-    // Zoom auf Cursor
-    translateX -= (offsetX / oldScale) * (newScale - oldScale);
-    translateY -= (offsetY / oldScale) * (newScale - oldScale);
-
-    currentScale = newScale;
-    isZoomed = currentScale > 1;
-
-    updateTransform(element);
-
-    zoomRAF = null;
-  });
-});
+      updateTransform(element);
+    });
 
     // =========================
     // 📱 TOUCH SUPPORT
