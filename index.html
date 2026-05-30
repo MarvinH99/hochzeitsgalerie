@@ -11,21 +11,24 @@
 
 <body>
   <div class="container">
-    <h1>Willkommen zur Hochzeitsseite 💍</h1>
+    <h1>Willkommen zur Hochzeitsseite</h1>
 
     <div id="passwordSection">
       <p>Bitte Passwort eingeben:</p>
       <input type="password" id="passwordInput">
       <button onclick="checkPassword()">Weiter</button>
       <p id="passwordStatus"></p>
+    <h2 id="countdown"></h2>
+
     </div>
 
     <div id="menuSection" style="display:none;">
       <!-- <p>Willkommen! Wähle eine Option:</p> -->
 
-      <button onclick="goToUpload()">Fotos/Videos hochladen 📸</button>
+      <button onclick="goToUpload()">Fotos/Videos hochladen 📸🎥</button>
       <button onclick="goToGallery()">Galerie anschauen 🖼️</button>
-
+      <button onclick="goToSchedule()">Tagesablauf 📅</button>
+      <button onclick="goToPhotographer()">Fotos vom Fotografen 📷</button>
       <!-- <img src="images/Miriam&Marvin.jpeg" alt="Hochzeitsbild" style="width:80%; margin-top:20px; border-radius:12px;"> -->
     
     </div>
@@ -38,6 +41,14 @@
     document.getElementById("passwordSection").style.display = "none";
     document.getElementById("menuSection").style.display = "block";
   }
+
+  function goToSchedule() {
+  window.location.href = "schedule.html";
+}
+
+function goToPhotographer() {
+  window.location.href = "photographer.html";
+}
 
   function checkPassword() {
     const input = document.getElementById("passwordInput").value;
@@ -58,6 +69,37 @@
   function goToGallery() {
     window.location.href = "gallery.html";
   }
+
+
+
+
+// 🔥 Datum der Hochzeit anpassen
+const weddingDate = new Date("2026-08-01T11:00:00").getTime();
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
+
+  const countdownEl = document.getElementById("countdown");
+
+  if (distance <= 0) {
+    countdownEl.innerHTML = "Just married 💍";
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  countdownEl.innerHTML =
+    `⏳ Noch ${days} Tage ${hours} Std. ${minutes} Min. ${seconds} Sek.`;
+}
+
+// jede Sekunde aktualisieren
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
 
   // ✅ WARTET, bis die Seite geladen ist
   window.addEventListener("DOMContentLoaded", () => {
