@@ -76,6 +76,13 @@ h1 {
   line-height: 1.2; /* damit die Zeilen nicht zu weit auseinander stehen */
 }
 
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #333; /* Überschrift schwarz */
+  line-height: 1.2; /* damit die Zeilen nicht zu weit auseinander stehen */
+}
+
 /* Buttons */
 button, a.button {
   background-color: #f7c59f; 

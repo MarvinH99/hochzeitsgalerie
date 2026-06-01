@@ -11,11 +11,15 @@
 
 <body>
   <div class="container">
-    <h1>Willkommen zur Hochzeitsseite</h1>
-
+    
     <div id="passwordSection">
+      <h1>Wir heiraten - und ihr seid dabei!</h1>
+      <h2>Wir freuen uns darauf, diesen besonderen Tag gemeinsam mit euch zu feiern!</h2>
+
+      <br><br>
+
       <p>Bitte Passwort eingeben:</p>
-      <input type="password" id="passwordInput">
+      <input type="password" id="passwordInput"> <br>
       <button onclick="checkPassword()">Weiter</button>
       <p id="passwordStatus"></p>
     <h2 id="countdown"></h2>
@@ -24,18 +28,19 @@
 
     <div id="menuSection" style="display:none;">
       <!-- <p>Willkommen! Wähle eine Option:</p> -->
-
-      <button onclick="goToUpload()">Fotos/Videos hochladen 📸🎥</button>
-      <button onclick="goToGallery()">Galerie anschauen 🖼️</button>
-      <button onclick="goToSchedule()">Tagesablauf 📅</button>
-      <button onclick="goToPhotographer()">Fotos vom Fotografen 📷</button>
+      <button onclick="goToSchedule()">📋 Tagesablauf</button>
+      <button onclick="goToSchedule()">🚗 Anfahrt und Parken</button>
+      <button onclick="goToUpload()">🎥 Fotos/Videos hochladen</button>
+      <button onclick="goToGallery()">🖼️ Galerie anschauen</button>
+      <button onclick="goToPhotographer()">📷 Fotos vom Fotografen</button>
+      <button onclick="goToSpotify()">🎵 Musikwünsche</button>
       <!-- <img src="images/Miriam&Marvin.jpeg" alt="Hochzeitsbild" style="width:80%; margin-top:20px; border-radius:12px;"> -->
     
     </div>
   </div>
 
   <script>
-  const correctPassword = "123";
+  const correctPassword = "1";
 
   function showMenu() {
     document.getElementById("passwordSection").style.display = "none";
@@ -48,6 +53,14 @@
 
 function goToPhotographer() {
   window.location.href = "photographer.html";
+}
+
+function goToSpotify() {
+  window.location.href = "spotify.html";
+}
+
+function goToDirections() {
+  window.location.href = "anfahrt.html";
 }
 
   function checkPassword() {
