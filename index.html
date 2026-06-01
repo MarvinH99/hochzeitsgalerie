@@ -29,7 +29,7 @@
     <div id="menuSection" style="display:none;">
       <!-- <p>Willkommen! Wähle eine Option:</p> -->
       <button onclick="goToSchedule()">📋 Tagesablauf</button>
-      <button onclick="goToSchedule()">🚗 Anfahrt und Parken</button>
+      <button onclick="goToDirections()">🚗 Anfahrt und Parken</button>
       <button onclick="goToUpload()">🎥 Fotos/Videos hochladen</button>
       <button onclick="goToGallery()">🖼️ Galerie anschauen</button>
       <button onclick="goToPhotographer()">📷 Fotos vom Fotografen</button>
@@ -40,12 +40,16 @@
   </div>
 
   <script>
-  const correctPassword = "m&m-01.0";
+  const correctPassword = "m&m-01.08.";
 
   function showMenu() {
     document.getElementById("passwordSection").style.display = "none";
     document.getElementById("menuSection").style.display = "block";
   }
+
+  function goToDirections() {
+  window.location.href = "anfahrt.html";
+}
 
   function goToSchedule() {
   window.location.href = "schedule.html";
@@ -59,9 +63,7 @@ function goToSpotify() {
   window.location.href = "spotify.html";
 }
 
-function goToDirections() {
-  window.location.href = "anfahrt.html";
-}
+
 
   function checkPassword() {
     const input = document.getElementById("passwordInput").value;
