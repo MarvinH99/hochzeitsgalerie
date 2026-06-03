@@ -28,15 +28,17 @@
 
     <div id="menuSection" style="display:none;">
       <!-- <p>Willkommen! Wähle eine Option:</p> -->
+      <button onclick="goToSpotify()">🎵 Musikwünsche</button>
+      <button onclick="goToDresscode()">👗 Dresscode-Inspiration</button>
       <button onclick="goToSchedule()">📋 Tagesablauf</button>
       <button onclick="goToDirections()">🚗 Anfahrt und Parken</button>
       <button onclick="goToUpload()">🎥 Fotos/Videos hochladen</button>
       <button onclick="goToGallery()">🖼️ Galerie anschauen</button>
       <button onclick="goToPhotographer()">📷 Fotos vom Fotografen</button>
-      <button onclick="goToSpotify()">🎵 Musikwünsche</button>
       <!-- <img src="images/Miriam&Marvin.jpeg" alt="Hochzeitsbild" style="width:80%; margin-top:20px; border-radius:12px;"> -->
     
     </div>
+
   </div>
 
   <script>
@@ -61,6 +63,10 @@ function goToPhotographer() {
 
 function goToSpotify() {
   window.location.href = "spotify.html";
+}
+
+function goToDresscode() {
+  window.location.href = "dresscode.html";
 }
 
 
