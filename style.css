@@ -132,6 +132,20 @@ input[type="password"] {
 
 .gallery > div {
   width: 100%;
+  position: relative;
+}
+
+.lightbox-delete-btn {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgba(200, 0, 0, 0.75);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .gallery img,

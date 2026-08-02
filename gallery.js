@@ -190,15 +190,69 @@ function openLightbox(index) {
   document.body.appendChild(lightbox);
 }
 
+const PAGE_SIZE = 10;
+let renderedCount = 0;
+let galleryObserver = null;
+
+// Rendert eine einzelne Kachel (Bild oder Video) ins Grid
+function renderItem(item) {
+    const gallery = document.getElementById("gallery");
+    const wrapper = document.createElement("div");
+    let element;
+
+    if (item.type === "image") {
+        element = document.createElement("img");
+        element.src = item.gridUrl;
+        element.style.objectFit = "cover";
+        element.style.borderRadius = "10px";
+        element.style.display = "block";
+        element.loading = "lazy";
+        element.addEventListener("click", () => openLightbox(galleryItems.indexOf(item)));
+    } else if (item.type === "video") {
+        element = document.createElement("video");
+        element.src = item.url;
+        element.controls = true;
+        element.preload = "metadata"; // lädt nur genug fürs Vorschaubild, nicht das ganze Video
+        element.style.objectFit = "cover";
+        element.style.borderRadius = "10px";
+        element.style.display = "block";
+        element.addEventListener("click", () => openLightbox(galleryItems.indexOf(item)));
+    }
+
+    if (element) {
+        wrapper.appendChild(element);
+        gallery.appendChild(wrapper);
+    }
+}
+
+// Rendert den nächsten Batch von Kacheln und hängt den Sentinel wieder ans Ende
+function renderNextBatch() {
+    const gallery = document.getElementById("gallery");
+    const nextItems = galleryItems.slice(renderedCount, renderedCount + PAGE_SIZE);
+    nextItems.forEach(renderItem);
+    renderedCount += nextItems.length;
+
+    const oldSentinel = document.getElementById("gallery-sentinel");
+    if (oldSentinel) oldSentinel.remove();
+
+    if (renderedCount < galleryItems.length) {
+        const sentinel = document.createElement("div");
+        sentinel.id = "gallery-sentinel";
+        gallery.appendChild(sentinel);
+        galleryObserver.observe(sentinel);
+    }
+}
+
 // 🔹 Galerie laden
 async function loadGallery() {
     const gallery = document.getElementById("gallery");
     gallery.innerHTML = "";
+    renderedCount = 0;
 
     const { data, error } = await supabaseClient
         .storage
         .from("uploads")
-        .list("", { recursive: true });
+        .list("", { recursive: true }); // Standard-Sortierung: chronologisch aufsteigend, neueste unten
 
     if (error) {
         gallery.textContent = "Fehler beim Laden 😕";
@@ -213,46 +267,38 @@ async function loadGallery() {
 
     galleryItems = []; // reset
 
-    data.forEach((file, index) => {
+    // Menge aller Dateinamen, um zu prüfen, ob zu einem Bild ein Thumbnail existiert
+    const allNames = new Set(data.map(f => f.name));
+
+    data.forEach((file) => {
         if (!file.name || file.name.endsWith("/")) return;
+        if (file.name.startsWith("thumb_")) return; // Thumbnails sind kein eigener Galerie-Eintrag
+
         const ext = file.name.split(".").pop().toLowerCase();
         const url = supabaseClient.storage.from("uploads").getPublicUrl(file.name).data.publicUrl;
 
-        const wrapper = document.createElement("div");
-        
-
-        let element;
-
-        // 🖼️ Bilder
         if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
-            element = document.createElement("img");
-            element.src = url;
-            element.style.objectFit = "cover";
-            element.style.borderRadius = "10px";
-            element.style.display = "block";
-            element.loading = "lazy";
+            // Thumbnail verwenden, falls vorhanden (neue Uploads) – sonst Fallback auf Original (alte Uploads)
+            const thumbName = "thumb_" + file.name;
+            const gridUrl = allNames.has(thumbName)
+                ? supabaseClient.storage.from("uploads").getPublicUrl(thumbName).data.publicUrl
+                : url;
 
-            galleryItems.push({ type: "image", url });
-            element.addEventListener("click", () => openLightbox(galleryItems.findIndex(i => i.url === url)));
-        }
-        // 🎥 Videos
-        else if (ext === "mp4") {
-            element = document.createElement("video");
-            element.src = url;
-            element.controls = true;
-            element.style.objectFit = "cover";
-            element.style.borderRadius = "10px";
-            element.style.display = "block";
-
-            galleryItems.push({ type: "video", url });
-            element.addEventListener("click", () => openLightbox(galleryItems.findIndex(i => i.url === url)));
-        }
-
-        if (element) {
-            wrapper.appendChild(element);
-            gallery.appendChild(wrapper);
+            galleryItems.push({ type: "image", url, gridUrl, name: file.name });
+        } else if (ext === "mp4") {
+            galleryItems.push({ type: "video", url, name: file.name });
         }
     });
+
+    // Beobachter, der beim Erreichen des Sentinels den nächsten Batch nachlädt
+    if (galleryObserver) galleryObserver.disconnect();
+    galleryObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) renderNextBatch();
+        });
+    }, { rootMargin: "300px" }); // etwas vor Erreichen des Endes schon nachladen
+
+    renderNextBatch();
 }
 
 // Popstate für Lightbox schließen
